@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/login.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+            <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="responseMessage" style="color: red; margin-top: 1rem;"></p>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/super-admin/admin-login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({ email: email, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                   
+                    const token = data.token; 
+
+                    // Store the token in localStorage
+                    localStorage.setItem('authToken', token);
+
+                    // Redirect to the home page after successful login
+                    window.location.href = '/super-admin/home/'; 
+                } else {
+                    document.getElementById('responseMessage').style.color = 'red';
+                    document.getElementById('responseMessage').innerText = data.message;
+                }
+            })
+            .catch(error => {
+                document.getElementById('responseMessage').innerText = 'Login failed.';
+                console.error('Error:', error);
+            });
+        });
+
+        // Function to get the CSRF token
+        function getCSRFToken() {
+            let name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</body>
+</html>
