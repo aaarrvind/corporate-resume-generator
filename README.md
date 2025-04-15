@@ -1,4 +1,4 @@
 # corporate-resume-generator
 
-Requirements :
+Install packages:
 pip install djangorestframework-simplejwt
