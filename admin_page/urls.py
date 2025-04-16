@@ -3,6 +3,9 @@ from . import views
 
 urlpatterns = [
     path('', views.Login, name='adminLogin'),          
-    path('home/', views.home, name='home'),       
+    path('customer/', views.customer, name='customer'),       
     path('admin-login/', views.handleLogin, name='admin-login'), 
+    path('dashboard/',views.Dashboard,name='dashboard'),
+    path('handleCompanyData/',views.HandleCompanyData,name='handleCompanyData'),
+    path('fetchCompanyData/',views.fetchCompanyData,name='fetchCompanyData')
 ]
