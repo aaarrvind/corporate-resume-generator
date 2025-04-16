@@ -44,7 +44,7 @@
                     localStorage.setItem('authToken', token);
 
                     // Redirect to the home page after successful login
-                    window.location.href = '/super-admin/home/'; 
+                    window.location.href = '/super-admin/dashboard/'; 
                 } else {
                     document.getElementById('responseMessage').style.color = 'red';
                     document.getElementById('responseMessage').innerText = data.message;
