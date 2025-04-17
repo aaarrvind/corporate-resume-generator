@@ -20,42 +20,54 @@ def Dashboard(request):
     return render(request,'admin_page/dashboard.html')
 
 
+# import company mode
+from .models import Company
 def HandleCompanyData(request):
     if request.method == 'POST':
         try:
+            # Parse JSON data from request body
             data = json.loads(request.body)
+
             companyName = data.get('companyName')
             companyEmail = data.get('companyEmail')
             companyPassword = data.get('companyPassword')
+            planType = data.get('planType', None)
+            subStart = data.get('subscriptionStart', None)
+            subEnd = data.get('subscriptionEnd', None)
+            isActive = data.get('isActive', False)
 
-            # Hash the password using SHA-256
+            # Hash the password (use Django's built-in hasher for best security)
             hashed_password = hashlib.sha256(companyPassword.encode()).hexdigest()
 
-            print(f"Data received: {companyName}, {companyEmail}, {hashed_password}")  # Debugging line
+            # Create a new Company object and save to the DB
+            company = Company(
+                name=companyName,
+                email=companyEmail,
+                password=hashed_password,
+                plan_type=planType,
+                subscription_start=subStart,
+                subscription_end=subEnd,
+                is_active=isActive
+            )
 
-            cursor = connection.cursor()
-
-            # Insert query with automatic timestamps
-            insert_query = """
-                INSERT INTO companies (name, email, password, created_at, updated_at)
-                VALUES (%s, %s, %s, NOW(), NOW())
-            """
-            print(f"Executing query: {insert_query}")  # Debugging line
-            cursor.execute(insert_query, (companyName, companyEmail, hashed_password))
-            connection.commit()
-            cursor.close()
+            company.save()
 
             return JsonResponse({
                 'success': True,
-                'message': 'Data stored in the database successfully...'
+                'message': 'Company data saved successfully.'
             })
-        
+
         except Exception as e:
-            print(f"Error: {str(e)}")  # Debugging line
-            return JsonResponse({'success': False, 'message': str(e)})
+            print("Error:", str(e))
+            return JsonResponse({
+                'success': False,
+                'message': f'Error: {str(e)}'
+            })
 
-    return JsonResponse({'success': False, 'message': 'Only POST requests are allowed'})
-
+    return JsonResponse({
+        'success': False,
+        'message': 'Only POST requests are allowed.'
+    })
 
 
 @csrf_exempt
