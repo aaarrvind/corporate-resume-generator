@@ -196,8 +196,17 @@
                       </button>
                 </div>
 
-                  <div class="company-list">
-                    <!-- Fetched company data will be inserted here -->            
+                  <div class="company-collection-list">
+                    <div class="company-heading-row">
+                      <span>Sl.No</span>
+                      <span>Company name</span>
+                      <span>Company Email</span>
+                      <span>Activate / Deactivate</span>
+                    </div>
+                    <div class="company-list">
+
+                      <!-- Fetched company data will be inserted here -->            
+                    </div>
                   </div>
                 
 
@@ -246,33 +255,7 @@
         overlay.classList.remove('active');
     }
 
-    document.getElementById('popupForm-data').addEventListener('submit',function(e) {
-      e.preventDefault();
-
-      const companyName = document.querySelector('[name = "companyName"]').value;
-      const companyEmail = document.querySelector('[name = "companyEmail"]').value;
-      const companyPassword = document.querySelector('[name = "companyPassword"]').value;
-
-      const formData = {
-        companyName : companyName,
-        companyEmail : companyEmail,
-        companyPassword : companyPassword
-      }
-
-      fetch('/super-admin/handleCompanyData/',{
-        method:'POST',
-        headers :  {
-          'Content-Type':'application/json',
-          'X-CSRFToken':getCSRFToken()
-        },
-        body:JSON.stringify(formData)
-      }).then((res)=>{
-        console.log(res);
-      }).catch((err)=>{
-        console.log('Error in storing the data',err)
-      }) 
-    })
-
+    
     // Function to get the CSRF token
     function getCSRFToken() {
             let name = 'csrftoken';
@@ -293,57 +276,93 @@
       // Displaying the data which is stored in the database
           
       document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        document.getElementById('popupForm-data').addEventListener('submit',function(e) {
+              
+              e.preventDefault();
+
+              const companyName = document.querySelector('[name = "companyName"]').value;
+              const companyEmail = document.querySelector('[name = "companyEmail"]').value;
+              const companyPassword = document.querySelector('[name = "companyPassword"]').value;
+
+              const formData = {
+                companyName : companyName,
+                companyEmail : companyEmail,
+                companyPassword : companyPassword
+              }
+
+              fetch('/super-admin/handleCompanyData/',{
+                method:'POST',
+                headers :  {
+                  'Content-Type':'application/json',
+                  'X-CSRFToken':getCSRFToken()
+                },
+                body:JSON.stringify(formData)
+              }).then((res)=>{
+                loadData();
+              }).catch((err)=>{
+                console.log('Error in storing the data',err)
+              }) 
+            })
+
+      })
+
+
+      function loadData() {
         fetch('/super-admin/fetchCompanyData/')
-          .then(response => response.json())
-          .then(data => {
-            
-            if (Array.isArray(data)) {
+            .then(response => response.json())
+            .then(data => {
               const container = document.querySelector('.company-list');
-              data.forEach((item,index) =>{
-                
-                const row = document.createElement('div')
-                row.classList.add('company-row');
+              container.innerHTML = '';
+            
 
-                // append serial number
-                const serialEle = document.createElement('span');
-                serialEle.textContent = `${index + 1}`
-                row.appendChild(serialEle);
+              if (Array.isArray(data)) {
+                const container = document.querySelector('.company-list');
+                data.forEach((item,index) =>{
+                  
+                  const row = document.createElement('div')
+                  row.classList.add('company-row');
 
-                // append company name
-                const nameEle = document.createElement('span');
-                nameEle.textContent = `${item.name}`;
-                row.appendChild(nameEle);
+                  // append serial number
+                  const serialEle = document.createElement('span');
+                  serialEle.textContent = `${index + 1}`
+                  row.appendChild(serialEle);
 
-                // append company email
-                const emailEle = document.createElement('span');
-                emailEle.textContent = `${item.email}`;
-                row.append(emailEle);
+                  // append company name
+                  const nameEle = document.createElement('span');
+                  nameEle.textContent = `${item.name}`;
+                  row.appendChild(nameEle);
 
-                // create toggle button
-                const toggleBtn = document.createElement('button');
-                toggleBtn.textContent = item.is_active ? 'Deactivate' : 'activate';
-                toggleBtn.setAttribute('data-id',item.id);
-                toggleBtn.classList.add('company-toggle-btn');
+                  // append company email
+                  const emailEle = document.createElement('span');
+                  emailEle.textContent = `${item.email}`;
+                  row.append(emailEle);
 
-                // Toggle logic
-                toggleBtn.addEventListener('click', () => {
-                  item.is_active = !item.is_active;
-                  toggleBtn.textContent = item.is_active ? 'Deactivate' : 'Activate';
-                  console.log("Real ID of this item:", toggleBtn.getAttribute('data-id'));
-                });
-                row.appendChild(toggleBtn);
+                  // create toggle button
+                  const toggleBtn = document.createElement('button');
+                  toggleBtn.textContent = item.is_active ? 'Deactivate' : 'activate';
+                  toggleBtn.setAttribute('data-id',item.id);
+                  toggleBtn.classList.add('company-toggle-btn');
+
+                  // Toggle logic
+                  toggleBtn.addEventListener('click', () => {
+                    item.is_active = !item.is_active;
+                    toggleBtn.textContent = item.is_active ? 'Deactivate' : 'Activate';
+                    console.log("Real ID of this item:", toggleBtn.getAttribute('data-id'));
+                  });
+                  row.appendChild(toggleBtn);
 
 
-                 // Append row to the container
-                container.appendChild(row);
-              })
-         
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching company data:', error);
-          });
-      });
+                  // Append row to the container
+                  container.appendChild(row);
+                })
+          
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching company data:', error);
+            });
+      }
 
 </script>
 
