@@ -3,7 +3,7 @@ Overview
 This repository contains the Employee, Project, and Technology/Tools modules (Developer 3) integrated with the Admin Page module (Developer 1) for the Corporate Resume Generator SaaS platform.
 Setup
 
-Clone: git clone https://github.com/yourusername/corporate-resume-generator.git
+Clone: git clone https://github.com/aaarrvind/corporate-resume-generator.git
 
 Install dependencies: pip install -r requirements.txt
 
