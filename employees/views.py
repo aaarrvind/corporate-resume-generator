@@ -89,3 +89,31 @@ def employee_delete(request, pk):
     employee.updated_by = request.user
     employee.save()
     return redirect('employee_list')
+
+@login_required
+def employee_restore(request, pk):
+    try:
+        company = Company.objects.filter
+        if not company:
+            return render(request, 'emplyees/error.html', {'message' : 'No company available'})
+        employee = get_object_or_404(Employee, pk=pk, is_deleted = True, company=company)
+    except Company.DoesNotExist:
+        return render(request, 'employees/error.html', {'message' : 'No company assigned'})
+    employee.is_deleted = False
+    employee.updated_by = request.user
+    employee.save()
+
+    return redirect('employee_list')
+
+
+@login_required
+def employee_permanent_delete(request , pk):
+    try:
+        company = Company.objects.first()
+        if not company:
+            return render(request, 'employee/error.html', {'message' : 'No company available'})
+        employee = get_object_or_404(Employee, pk=pk, is_deleted = True, company = company)
+    except Company.DoesNotExist:
+        return render(request, 'employee/error.html', {'message':'No company assigned'})
+    employee.delete()
+    return redirect('employee_list')

@@ -7,8 +7,7 @@
 <body>
     <div class="container mt-4">
         <h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Employee</h1>
-       
-        <form method="post">
+        
             {% csrf_token %}
             {% for field in form %}
                 <div class="mb-3">
