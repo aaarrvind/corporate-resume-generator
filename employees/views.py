@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from .models import Employee
 from .forms import EmployeeForm
 from admin_page.models import Company
@@ -12,10 +13,12 @@ def employee_list(request):
         company = Company.objects.first()
         if not company:
             return render(request, 'employees/error.html', {'message': 'No company available'})
-        employees = Employee.objects.filter(is_deleted=False, company=company)
+        active_employees = Employee.objects.filter(is_deleted=False, company=company)
+        deleted_employees = Employee.objects.filter(is_deleted=True, company=company)
     except Company.DoesNotExist:
-        employees = Employee.objects.none()
-    return render(request, 'employees/employee_list.html', {'employees': employees})
+        active_employees = Employee.objects.none()
+        deleted_employees_employees = Employee.objects.none()
+    return render(request, 'employees/employee_list.html', {'active_employees': active_employees, 'deleted_employees':deleted_employees})
 
 @login_required
 def employee_create(request):
@@ -28,13 +31,16 @@ def employee_create(request):
     if request.method == 'POST':
         form = EmployeeForm(request.POST)
         if form.is_valid():
-            employee = form.save(commit=False)
-            employee.company = company
-            employee.created_by = request.user
-            employee.updated_by = request.user
-            employee.save()
-            form.save_m2m()
-            return redirect('employee_list')
+            try:
+                employee = form.save(commit=False)
+                employee.company = company
+                employee.created_by = request.user
+                employee.updated_by = request.user
+                employee.save()
+                form.save_m2m()  # Saves skills_coding, skills_tools, projects
+                return redirect('employee_list')
+            except IntegrityError:
+                form.add_error('full_name', 'This name already exists. Check deleted employees to restore or permanently delete.')
     else:
         form = EmployeeForm()
     no_techs = not CodingLanguage.objects.filter(is_deleted=False).exists()
@@ -86,6 +92,7 @@ def employee_delete(request, pk):
     except Company.DoesNotExist:
         return render(request, 'employees/error.html', {'message': 'No company assigned'})
     employee.is_deleted = True
+    employee.status = 'Ex'
     employee.updated_by = request.user
     employee.save()
     return redirect('employee_list')
@@ -93,13 +100,14 @@ def employee_delete(request, pk):
 @login_required
 def employee_restore(request, pk):
     try:
-        company = Company.objects.filter
+        company = Company.objects.first()
         if not company:
-            return render(request, 'emplyees/error.html', {'message' : 'No company available'})
-        employee = get_object_or_404(Employee, pk=pk, is_deleted = True, company=company)
+            return render(request, 'employees/error.html', {'message' : 'No company available'})
+        employee = get_object_or_404(Employee, pk=pk, is_deleted=True, company=company)
     except Company.DoesNotExist:
         return render(request, 'employees/error.html', {'message' : 'No company assigned'})
     employee.is_deleted = False
+    employee.status = 'Current'
     employee.updated_by = request.user
     employee.save()
 

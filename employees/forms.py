@@ -1,20 +1,30 @@
 from django import forms
 from .models import Employee
+from technologies.models import CodingLanguage, Tool
+from projects.models import Project
 
 class EmployeeForm(forms.ModelForm):
+    skills_coding = forms.ModelMultipleChoiceField(
+        queryset=CodingLanguage.objects.filter(is_deleted=False),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control multiselect'}),
+        required=False
+    )
+    skills_tools = forms.ModelMultipleChoiceField(
+        queryset=Tool.objects.filter(is_deleted=False),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control multiselect'}),
+        required=False
+    )
+    projects = forms.ModelMultipleChoiceField(
+        queryset=Project.objects.filter(is_deleted=False),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control multiselect'}),
+        required=False
+    )
+
     class Meta:
         model = Employee
-        fields = ['full_name', 'designation', 'status', 'professional_summary',
-                  'experience', 'education', 'contact_info', 'skills_coding', 'skills_tools', 'projects']
+        fields = ['full_name', 'designation',  'status', 'skills_coding', 'skills_tools', 'projects']
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control'}),
             'designation': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'professional_summary': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'education': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'contact_info': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'skills_coding': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'skills_tools': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'projects': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
