@@ -19,6 +19,32 @@ def Login(request):
 def Dashboard(request):
     return render(request,'admin_page/dashboard.html')
 
+def companyHistory(request,company_id):
+    return render(request,'admin_page/companyChart.html',{'company_id':company_id})
+
+# handle company active and deactive button
+def handleActivity(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            Company_id = data['id']
+            is_active = 0
+            if(data['is_active']):
+                is_active = 1
+
+            cursor =connection.cursor()
+            query = 'UPDATE companies SET is_active = %s WHERe id = %s'
+            cursor.execute(query,[is_active,Company_id])
+            connection.commit()
+            cursor.close()
+
+            return JsonResponse({'success':True,'message':'data updated correctly'})
+        
+        except Exception as e:
+            return JsonResponse({'success':False,'message':'Error in updating the data'})
+    return JsonResponse({'success':False,'message':'Error in updating the data'})
+    
 
 # import company mode
 from .models import Company
