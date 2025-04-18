@@ -10,12 +10,13 @@
     color: #333;
     background-color: #f9fafb;
     line-height: 1.5;
+    overflow-y: hidden;
   }
   
   .dashboard {
     display: flex;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: hidden;
   }
   
   /* Sidebar styles */
@@ -211,7 +212,14 @@
     margin-left: 260px;
     overflow-y: auto;
     height: 100vh;
-  }
+    scrollbar-width: none;         /* Firefox */
+    -ms-overflow-style: none;      /* IE and Edge */
+    }
+
+    .main-content::-webkit-scrollbar {
+      display: none;                 /* Chrome, Safari */
+    }
+
   
   .mobile-header {
     display: none;
@@ -292,10 +300,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 0px 10px;
   }
 
   .chart-header-content p {
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
   }
 
@@ -319,6 +328,18 @@
     display: block;
   }
 
+  @keyframes popupFormFadeIn {
+    0%{
+      opacity: 0;
+      transform: translate(-50%,-40%);
+    }
+
+    100%{
+      opacity: 1;
+      transform: translate(-50%,-50%);
+    }
+  }
+
   .popupForm {
     background-color: white;
     z-index: 999;
@@ -334,6 +355,7 @@
     max-width: 500px;
     width: 100%;
     border-radius: 5px;
+    animation: popupFormFadeIn 0.4s ease forwards;
   }
 
   .popupForm.active {
@@ -406,7 +428,7 @@
   }
   
   .popupForm form button[type="submit"] {
-    background-color: #4a90e2;
+    background-color: #6366f1;
     color: white;
     border: none;
     border-radius: 4px;
@@ -418,11 +440,13 @@
   }
   
   .popupForm form button[type="submit"]:hover {
-    background-color: #3a7bc8;
+    background-color: #5759e6;
+    transform: scale(0.95);
   }
   
   /* popup form Responsive Styles */
   @media (max-width: 600px) {
+
     .popupForm {
       max-width: 90%;
     }
@@ -577,10 +601,18 @@
   color: white;
   border-radius: 5px;
   margin-bottom:10px ;
- overflow-x: auto;
   white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
+#openFormBtn {
+  border: none;
+  border-radius: 10px;
+  background-color: #888af99e;
+  color: #110b84;
+  box-shadow: 0px 0px 15px  rgb(213, 213, 255);
+}
 
 .company-row {
   width: 100%;
@@ -588,12 +620,17 @@
   grid-template-columns: 1fr 2fr 2fr 1fr; 
   padding: 10px;
   text-align: center;
+  cursor: pointer;
+}
+
+.company-row:hover {
+  background-color: #c1ddff5d;
 }
 
 .company-row span {
   padding: 8px;
   white-space: nowrap; 
-  overflow: hidden;
+  overflow:hidden ; 
   text-overflow: ellipsis;  
 }
 
@@ -602,6 +639,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+
 }
 
 .company-list .company-row {
@@ -611,24 +649,101 @@
   text-align: center;
 }
 
-.company-row .company-toggle-btn {
+.company-row .company-toggle-btn-Deactivate {
   width: fit-content;
-  padding: 5px 10px;
+  padding: 5px 12px;
   margin:  0 auto;
   border: none;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 5px;
+  color: rgb(205, 10, 10);
+  background-color: rgba(254, 118, 118, 0.287);
+  border-radius: 20px;
   cursor: pointer;
 }
 
-.company-row .company-toggle-btn:hover {
-  background-color: #45a049; 
+.company-row .company-toggle-btn-Activate {
+  width: fit-content;
+  padding: 5px 10px;
+  background-color: #7bfe7f99;
+  color: rgb(20, 181, 20);
+  margin:  0 auto;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 }
+
 
 /* Add some space between rows */
 .company-list .company-row:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+.company-list .company-row:nth-child(even):hover {
+  background-color: #b7b7f78b;
+}
 
+/* Pagination content */
+.company-pagination-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.company-pagination-content .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+ 
+}
+
+.company-pagination-content .pagination button {
+  width: fit-content;
+  border: none;
+  background-color: #6366f1;
+  border-radius: 10px;
+  color: white;
+}
+
+.company-pagination-content .pagination button:hover {
+  background-color: #8e90f7;
+}
+
+.company-size {
+  color: #949494;
+}
+
+.company-pagination-content .pagination #pageIndicator {
+  text-wrap: nowrap;
+}
+/* success message */
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #62d566;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  z-index: 9999;
+  animation: slideIn 0.5s ease forwards;
+  transition: opacity 0.5s ease;
+}
+
+.success-message.fade-out {
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

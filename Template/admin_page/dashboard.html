@@ -1,370 +1,497 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/dashboard.css' %}">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/dashboard.css' %}">
+  <title>Document</title>
 </head>
+
 <body>
-    <div class="chart-overlay" id="chart-overlay"></div>
-           
-    <div class="dashboard">
-        <!-- Overlay for mobile -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-          <div class="sidebar-header">
-            <div class="logo">
-              <div class="logo-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
-                  <line x1="3" x2="21" y1="9" y2="9"></line>
-                  <line x1="9" x2="9" y1="21" y2="9"></line>
-                </svg>
-              </div>
-              <h1>Admin Panel</h1>
-            </div>
-            <button class="close-sidebar-btn" id="closeSidebarBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
+  <div class="chart-overlay" id="chart-overlay"></div>
+
+  <div class="dashboard">
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+              <line x1="3" x2="21" y1="9" y2="9"></line>
+              <line x1="9" x2="9" y1="21" y2="9"></line>
+            </svg>
           </div>
-    
-          <nav class="sidebar-nav"><style>
-            body {
-                font-family: Arial, sans-serif;
-                padding: 2rem;
-                background-color: #f0f0f0;
-            }
-            .form-container {
-                max-width: 400px;
-                margin: auto;
-                background: #fff;
-                padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            }
-            input, button {
-                width: 100%;
-                padding: 0.6rem;
-                margin-top: 1rem;
-                font-size: 1rem;
-            }
+          <h1>Admin Panel</h1>
+        </div>
+        <button class="close-sidebar-btn" id="closeSidebarBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f0f0f0;
+          }
+
+          .form-container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+
+          input,
+          button {
+            width: 100%;
+            padding: 0.6rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+          }
         </style>
-            <ul>
-              <li>
-                <a  class="nav-item active">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
-                    <line x1="3" x2="21" y1="9" y2="9"></line>
-                    <line x1="9" x2="9" y1="21" y2="9"></line>
-                  </svg>
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <path d="M16 16h6v6h-6z"></path>
-                    <path d="M2 16h6v6H2z"></path>
-                    <path d="M9 2h6v6H9z"></path>
-                    <path d="M3 10h18"></path>
-                    <path d="M10 3v17"></path>
-                  </svg>
-                  Product
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'customer' %}" class="nav-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                  Customers
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 2v20"></path>
-                    <path d="M12 12H2"></path>
-                    <path d="m20 16-4-4 4-4"></path>
-                  </svg>
-                  Income
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <path d="m3 15 5-5 5 5"></path>
-                    <path d="m18 9-5-5-5 5"></path>
-                    <path d="M21 19H3"></path>
-                  </svg>
-                  Promote
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4"></path>
-                    <path d="M12 8h.01"></path>
-                  </svg>
-                  Help
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </nav>
-    
-          <div class="user-profile">
-            <div class="avatar">
-              <img src="https://via.placeholder.com/40" alt="User avatar">
-            </div>
-            <div class="user-info">
-              <p class="user-name">Admin</p>
-              <p class="user-role">Project Manager</p>
-            </div>
+        <ul>
+          <li>
+            <a class="nav-item active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <line x1="3" x2="21" y1="9" y2="9"></line>
+                <line x1="9" x2="9" y1="21" y2="9"></line>
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M16 16h6v6h-6z"></path>
+                <path d="M2 16h6v6H2z"></path>
+                <path d="M9 2h6v6H9z"></path>
+                <path d="M3 10h18"></path>
+                <path d="M10 3v17"></path>
+              </svg>
+              Product
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'customer' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              Customers
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 2v20"></path>
+                <path d="M12 12H2"></path>
+                <path d="m20 16-4-4 4-4"></path>
+              </svg>
+              Income
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="m3 15 5-5 5 5"></path>
+                <path d="m18 9-5-5-5 5"></path>
+                <path d="M21 19H3"></path>
+              </svg>
+              Promote
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
+              Help
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="user-profile">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/40" alt="User avatar">
+        </div>
+        <div class="user-info">
+          <p class="user-name">Admin</p>
+          <p class="user-role">Project Manager</p>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <!-- Mobile Header -->
+      <header class="mobile-header">
+        <button class="menu-btn" id="menuBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="search-container">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="text" placeholder="Search..." class="search-input">
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- Header -->
+        <div class="content-header">
+          <h1 class="greeting">Hello admin 👋</h1>
+          <div class="search-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input type="text" placeholder="Search" class="search-input">
           </div>
-        </aside>
-    
-        <div class="main-content">
-          <!-- Mobile Header -->
-          <header class="mobile-header">
-            <button class="menu-btn" id="menuBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                <line x1="4" x2="20" y1="12" y2="12"></line>
-                <line x1="4" x2="20" y1="6" y2="6"></line>
-                <line x1="4" x2="20" y1="18" y2="18"></line>
+        </div>
+
+        <!-- Displaying the chart -->
+
+        <div class="chart-content">
+          <div class="chart-header-content">
+            <p>All Customers</p>
+            <button id="openFormBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
-            <div class="search-container">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
-              <input type="text" placeholder="Search..." class="search-input">
+          </div>
+
+          <div class="company-collection-list">
+            <div class="company-heading-row">
+              <span>Sl.No</span>
+              <span>Company name</span>
+              <span>Company Email</span>
+              <span>Activate / Deactivate</span>
             </div>
-          </header>
-    
-          <!-- Dashboard Content -->
-            <div class="dashboard-content">
-            <!-- Header -->
-            <div class="content-header">
-              <h1 class="greeting">Hello admin 👋</h1>
-              <div class="search-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </svg>
-                <input type="text" placeholder="Search" class="search-input">
+            <div class="company-list">
+
+              <!-- Fetched company data will be inserted here -->
+            </div>
+
+            <div class="company-pagination-content">
+              <p class="company-size"></p>
+              <div class="pagination">
+                <button id="prevPage"> Previous</button>
+                <span id="pageIndicator"></span>
+                <button id="nextPage">Next</button>
               </div>
             </div>
-            
-            <!-- Displaying the chart -->
 
-           <div class="chart-content">
-                <div class="chart-header-content">
-                    <p>Company list</p>
-                    <button id="openFormBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor" stroke-width="2">
-                          <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </button>
-                </div>
+          </div>
 
-                  <div class="company-collection-list">
-                    <div class="company-heading-row">
-                      <span>Sl.No</span>
-                      <span>Company name</span>
-                      <span>Company Email</span>
-                      <span>Activate / Deactivate</span>
-                    </div>
-                    <div class="company-list">
 
-                      <!-- Fetched company data will be inserted here -->            
-                    </div>
-                  </div>
-                
+          <div class="popupForm" id="popupForm">
+            <div class="popupform-heading">
+              <h1>Add company admin details</h1>
+              <button id="closeform" class="closeform">Close</button>
+            </div>
+            <form id="popupForm-data" method="POST">
+              <label>company name</label>
+              <input type="text" name="companyName" placeholder="Enter company name">
+              <label>Company EmailID</label>
+              <input type="text" name="companyEmail" placeholder="Enter company Email Id"></input>
+              <label>Password</label>
+              <input type="password" name="companyPassword" placeholder="Enter the password">
 
-                <div class="popupForm" id="popupForm">
-                    <div class="popupform-heading">
-                        <h1>Add company admin details</h1>
-                        <button id="closeform" class="closeform">Close</button>
-                    </div>
-                    <form id="popupForm-data" method="POST">
-                        <label>company name</label>
-                        <input type="text" name="companyName" placeholder="Enter company name">
-                        <label>Company EmailID</label>
-                        <input type="text" name="companyEmail" placeholder ="Enter company Email Id"></input>
-                        <label>Password</label>
-                        <input type="password" name="companyPassword" placeholder="Enter the password">
-
-                        <button type="submit">Add</button>
-                    </form>
-                </div>
-            </div>  
-
+              <button type="submit">Add</button>
+            </form>
           </div>
 
         </div>
+
       </div>
 
-<script>
+    </div>
+  </div>
+
+  <script>
     const openFormBtn = document.getElementById('openFormBtn');
-    const popupForm =  document.getElementById('popupForm');
+    const popupForm = document.getElementById('popupForm');
     const overlay = document.getElementById('chart-overlay');
-    const closeform =  document.getElementById('closeform');
+    const closeform = document.getElementById('closeform');
 
 
-    openFormBtn.addEventListener('click',function() {
-        popupForm.classList.add('active');
-        overlay.classList.add('active');
+    openFormBtn.addEventListener('click', function () {
+      popupForm.classList.add('active');
+      overlay.classList.add('active');
     })
 
-    closeform.onclick =() =>{
-        popupForm.classList.remove('active');
-        overlay.classList.remove('active');
+    closeform.onclick = () => {
+      popupForm.classList.remove('active');
+      overlay.classList.remove('active');
     }
 
-    overlay.onclick =() => {
-        popupForm.classList.remove('active');
-        overlay.classList.remove('active');
+    overlay.onclick = () => {
+      popupForm.classList.remove('active');
+      overlay.classList.remove('active');
     }
 
-    
+
     // Function to get the CSRF token
     function getCSRFToken() {
-            let name = 'csrftoken';
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let cookie of cookies) {
-                    cookie = cookie.trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
+      let name = 'csrftoken';
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
         }
-
-      // Displaying the data which is stored in the database
-          
-      document.addEventListener('DOMContentLoaded', () => {
-        loadData();
-        document.getElementById('popupForm-data').addEventListener('submit',function(e) {
-              
-              e.preventDefault();
-
-              const companyName = document.querySelector('[name = "companyName"]').value;
-              const companyEmail = document.querySelector('[name = "companyEmail"]').value;
-              const companyPassword = document.querySelector('[name = "companyPassword"]').value;
-
-              const formData = {
-                companyName : companyName,
-                companyEmail : companyEmail,
-                companyPassword : companyPassword
-              }
-
-              fetch('/super-admin/handleCompanyData/',{
-                method:'POST',
-                headers :  {
-                  'Content-Type':'application/json',
-                  'X-CSRFToken':getCSRFToken()
-                },
-                body:JSON.stringify(formData)
-              }).then((res)=>{
-                loadData();
-              }).catch((err)=>{
-                console.log('Error in storing the data',err)
-              }) 
-            })
-
-      })
-
-
-      function loadData() {
-        fetch('/super-admin/fetchCompanyData/')
-            .then(response => response.json())
-            .then(data => {
-              const container = document.querySelector('.company-list');
-              container.innerHTML = '';
-            
-
-              if (Array.isArray(data)) {
-                const container = document.querySelector('.company-list');
-                data.forEach((item,index) =>{
-                  
-                  const row = document.createElement('div')
-                  row.classList.add('company-row');
-
-                  // append serial number
-                  const serialEle = document.createElement('span');
-                  serialEle.textContent = `${index + 1}`
-                  row.appendChild(serialEle);
-
-                  // append company name
-                  const nameEle = document.createElement('span');
-                  nameEle.textContent = `${item.name}`;
-                  row.appendChild(nameEle);
-
-                  // append company email
-                  const emailEle = document.createElement('span');
-                  emailEle.textContent = `${item.email}`;
-                  row.append(emailEle);
-
-                  // create toggle button
-                  const toggleBtn = document.createElement('button');
-                  toggleBtn.textContent = item.is_active ? 'Deactivate' : 'activate';
-                  toggleBtn.setAttribute('data-id',item.id);
-                  toggleBtn.classList.add('company-toggle-btn');
-
-                  // Toggle logic
-                  toggleBtn.addEventListener('click', () => {
-                    item.is_active = !item.is_active;
-                    toggleBtn.textContent = item.is_active ? 'Deactivate' : 'Activate';
-                    console.log("Real ID of this item:", toggleBtn.getAttribute('data-id'));
-                  });
-                  row.appendChild(toggleBtn);
-
-
-                  // Append row to the container
-                  container.appendChild(row);
-                })
-          
-              }
-            })
-            .catch(error => {
-              console.error('Error fetching company data:', error);
-            });
       }
+      return cookieValue;
+    }
 
-</script>
+    // Displaying the data which is stored in the database
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+
+      document.getElementById('popupForm-data').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const companyName = document.querySelector('[name="companyName"]').value;
+        const companyEmail = document.querySelector('[name="companyEmail"]').value;
+        const companyPassword = document.querySelector('[name="companyPassword"]').value;
+
+        const formData = {
+          companyName,
+          companyEmail,
+          companyPassword,
+        };
+
+        fetch('/super-admin/handleCompanyData/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCSRFToken(),
+            },
+            body: JSON.stringify(formData),
+          })
+          .then((res) => {
+            const success = document.createElement('div');
+            success.classList.add('success-message');
+
+            const content = document.createElement('span');
+            content.classList.add('success-content');
+            content.textContent = 'Data stored successfully';
+            success.appendChild(content);
+            document.body.appendChild(success);
+
+            setTimeout(() => {
+              success.classList.add('fade-out');
+
+              popupForm.classList.remove('active');
+              overlay.classList.remove('active');
+
+              setTimeout(() => {
+                success.remove();
+              }, 500);
+            }, 2000);
+
+            loadData(); // reload data after form submission
+          })
+          .catch((err) => {
+            console.log('Error in storing the data', err);
+          });
+      });
+
+      // Pagination listeners
+      document.getElementById('prevPage').addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          paginateCompanyRows();
+        }
+      });
+
+      document.getElementById('nextPage').addEventListener('click', () => {
+        const allRows = document.querySelectorAll('.company-row');
+        const totalPages = Math.ceil(allRows.length / rowsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          paginateCompanyRows();
+        }
+      });
+    });
+
+    // Pagination
+    let currentPage = 1;
+    const rowsPerPage = 8;
+
+    function paginateCompanyRows() {
+      const allRows = document.querySelectorAll('.company-row');
+      const totalPages = Math.ceil(allRows.length / rowsPerPage);
+
+      allRows.forEach((row, index) => {
+        row.style.display =
+          index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage ?
+          'grid' :
+          'none';
+      });
+
+      document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById('prevPage').disabled = currentPage === 1;
+      document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
+
+    // Load and display data
+    function loadData() {
+      fetch('/super-admin/fetchCompanyData/')
+        .then((response) => response.json())
+        .then((data) => {
+          const container = document.querySelector('.company-list');
+          container.innerHTML = '';
+
+          const size = document.querySelector('.company-size');
+          if(currentPage == 1) start = 1;
+          size.textContent = `Showing  8 rows out of ${data.length} entries`;
+
+
+          if (Array.isArray(data)) {
+            data.forEach((item, index) => {
+              const row = document.createElement('div');
+              row.classList.add('company-row');
+              row.setAttribute('data-id',item.id)
+
+              row.addEventListener('click', (e) => {
+                  const companyId = row.getAttribute('data-id');
+                  window.location.href = `/super-admin/details/${companyId}`;
+              });
+
+              // Serial number
+              const serialEle = document.createElement('span');
+              serialEle.textContent = `${index + 1}`;
+              row.appendChild(serialEle);
+
+              // Company name
+              const nameEle = document.createElement('span');
+              nameEle.textContent = item.name;
+              row.appendChild(nameEle);
+
+              // Email
+              const emailEle = document.createElement('span');
+              emailEle.textContent = item.email;
+              row.appendChild(emailEle);
+
+              // Toggle button
+              const toggleBtn = document.createElement('button');
+
+              toggleBtn.classList.add(!item.is_active ? 'company-toggle-btn-Deactivate' : 'company-toggle-btn-Activate');
+              toggleBtn.textContent = !item.is_active ? 'Deactivate' : 'Activate';
+              toggleBtn.setAttribute('data-id', item.id);
+
+              toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+            // Toggle the 'is_active' status before sending the request
+            const newStatus = !item.is_active;
+
+          // Send the update to the server
+          fetch('/super-admin/handleActivate/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+                      'X-CSRFToken': getCSRFToken()       
+            },
+            body: JSON.stringify({ is_active: newStatus, id: item.id })  
+          })
+            .then(res => res.json())  // Assuming the response is in JSON format
+            .then(data => {
+              // Update the UI based on the response (assuming the server updates the item)
+              item.is_active = newStatus;
+              toggleBtn.textContent = !item.is_active ? 'Deactivate' : 'Activate';
+
+              // Toggle button styles based on the new state
+              toggleBtn.classList.remove('company-toggle-btn-Deactivate', 'company-toggle-btn-Activate');
+              toggleBtn.classList.add(item.is_active ? 'company-toggle-btn-Activate' : 'company-toggle-btn-Deactivate');
+
+              console.log('Toggled ID:', toggleBtn.getAttribute('data-id'));
+            })
+            .catch(err => {
+              console.error('Error in updating the activity of the company', err);
+              toggleBtn.textContent = !item.is_active ? 'Deactivate' : 'Activate';
+            });
+        });
+
+
+              row.appendChild(toggleBtn);
+
+              // Append row to list
+              container.appendChild(row);
+            });
+
+            currentPage = 1;
+            paginateCompanyRows();
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching company data:', error);
+        });
+    }
+  </script>
 
 </body>
+
 </html>
