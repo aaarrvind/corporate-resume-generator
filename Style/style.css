@@ -560,6 +560,16 @@
     z-index: 40;
   }
   
+  .companyHistory-chartContainer {
+    max-width: 600px; /* You can set a max-width */
+    margin: auto; /* Center the chart */
+  }
+  
+  #statusChart {
+    width: 100% !important;
+    height: 300px; /* Set a specific height or adjust as necessary */
+  }
+  
   /* Responsive styles */
   @media (max-width: 768px) {
     .sidebar {
@@ -624,6 +634,9 @@
       justify-content: space-between;
       align-items: center;
     }
+
+    .active-deactive-company-list button {
+      font-size: 16px}
   }
   
   @media (min-width: 1024px) {
@@ -637,3 +650,42 @@
       align-items: center;
     }
   }
+
+
+/* Dashboard container */
+.dashboard-content {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: hidden;
+}
+
+
+.active-deactive-company-list button {
+  font-size: 21px;
+  border-radius: 10px;
+  border: none;
+}
+
+.active-deactive-company-list button:nth-child(odd) {
+  background-color: #7bfe7f99;
+  color: rgb(20, 181, 20);
+
+}
+
+.active-deactive-company-list button:nth-child(odd):hover {
+  background-color: rgba(46, 232, 46, 0.468);
+}
+
+.active-deactive-company-list button:nth-child(even) {
+  color: rgb(205, 10, 10);
+  background-color: rgba(254, 118, 118, 0.287);
+
+}
+
+.active-deactive-company-list button:nth-child(even):hover {
+  background-color: rgba(254, 118, 118, 0.539);
+}

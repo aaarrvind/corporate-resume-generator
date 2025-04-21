@@ -59,7 +59,7 @@
     </style>
         <ul>
           <li>
-            <a href="#" class="nav-item">
+            <a onclick="window.location.href='/super-admin/dashboard/'" href="#" class="nav-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
                 <line x1="3" x2="21" y1="9" y2="9"></line>
@@ -172,255 +172,77 @@
 
       <!-- Dashboard Content -->
       <div class="dashboard-content">
-        <!-- Header -->
-        <div class="content-header">
-          <h1 class="greeting">Hello admin 👋</h1>
-          <div class="search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <input type="text" placeholder="Search" class="search-input">
+        <div class="companyHistory-body">
+          <div class="companyHistory-container">
+            <p class="companyHistory-subheading">Company Status Analysis</p>
+      
+            <div class="companyHistory-chartSection">
+              <h3 class="companyHistory-chartTitle">Active vs Inactive Companies</h3>
+              <div class="companyHistory-chartContainer">
+                <canvas id="statusChart"></canvas> <!-- Removed the height attribute here -->
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="active-deactive-company-list">
+            <button onclick="window.location.href='/super-admin/getCompanies/?active=true' ">Active company list</button>
+            <button onclick="window.location.href='/super-admin/getCompanies/?active=false' ">Deactive company list</button>
           </div>
         </div>
-
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-          <div class="stats-card">
-            <div class="stats-header">
-              <div class="stats-icon-container bg-emerald-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stats-icon text-emerald-500">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-
-              <!-- Handling the customer -->
-
-              <div>
-                <h3 class="stats-title">Total Customers</h3>
-                <p class="stats-value">5,423</p>
-              </div>
-
-
-
-            </div>
-            <div class="stats-footer">
-              <div class="stats-change positive">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="change-icon">
-                  <path d="m18 15-6-6-6 6"></path>
-                </svg>
-                <span>16%</span>
-              </div>
-              <span class="stats-period">this month</span>
-            </div>
-          </div>
-
-          <div class="stats-card">
-            <div class="stats-header">
-              <div class="stats-icon-container bg-emerald-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stats-icon text-emerald-500">
-                  <path d="M18 21a8 8 0 0 0-16 0"></path>
-                  <circle cx="10" cy="8" r="5"></circle>
-                  <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="stats-title">Members</h3>
-                <p class="stats-value">1,893</p>
-              </div>
-            </div>
-            <div class="stats-footer">
-              <div class="stats-change negative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="change-icon">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-                <span>1%</span>
-              </div>
-              <span class="stats-period">this month</span>
-            </div>
-          </div>
-
-          <div class="stats-card">
-            <div class="stats-header">
-              <div class="stats-icon-container bg-emerald-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stats-icon text-emerald-500">
-                  <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                  <line x1="8" x2="16" y1="21" y2="21"></line>
-                  <line x1="12" x2="12" y1="17" y2="21"></line>
-                </svg>
-              </div>
-              <div>
-                <h3 class="stats-title">Active Now</h3>
-                <p class="stats-value">189</p>
-              </div>
-            </div>
-            <div class="stats-footer avatar-group">
-              <img src="https://via.placeholder.com/24" alt="User 1" class="avatar-small">
-              <img src="https://via.placeholder.com/24" alt="User 2" class="avatar-small">
-              <img src="https://via.placeholder.com/24" alt="User 3" class="avatar-small">
-              <img src="https://via.placeholder.com/24" alt="User 4" class="avatar-small">
-              <img src="https://via.placeholder.com/24" alt="User 5" class="avatar-small">
-            </div>
-          </div>
-        </div>
-
-        <!-- Customers Table Section -->
-        <div class="table-section">
-          <div class="table-header">
-            <div class="table-title-container">
-              <h2 class="table-title">All Customers</h2>
-              <div class="active-members-badge">Active Members</div>
-            </div>
-
-            <div class="table-actions">
-              <div class="search-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </svg>
-                <input type="text" placeholder="Search" class="search-input">
-              </div>
-
-              <div class="sort-container">
-                <span>Sort by:</span>
-                <button class="sort-button">
-                  Newest
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table class="customers-table">
-              <thead>
-                <tr>
-                  <th>Customer Name</th>
-                  <th>Company</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Country</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Jane Cooper</td>
-                  <td>Microsoft</td>
-                  <td>(225) 555-0118</td>
-                  <td>jane@microsoft.com</td>
-                  <td>United States</td>
-                  <td><span class="status-badge active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>Floyd Miles</td>
-                  <td>Yahoo</td>
-                  <td>(205) 555-0100</td>
-                  <td>floyd@yahoo.com</td>
-                  <td>Kiribati</td>
-                  <td><span class="status-badge inactive">Inactive</span></td>
-                </tr>
-                <tr>
-                  <td>Ronald Richards</td>
-                  <td>Adobe</td>
-                  <td>(302) 555-0107</td>
-                  <td>ronald@adobe.com</td>
-                  <td>Israel</td>
-                  <td><span class="status-badge inactive">Inactive</span></td>
-                </tr>
-                <tr>
-                  <td>Marvin McKinney</td>
-                  <td>Tesla</td>
-                  <td>(252) 555-0126</td>
-                  <td>marvin@tesla.com</td>
-                  <td>Iran</td>
-                  <td><span class="status-badge active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>Jerome Bell</td>
-                  <td>Google</td>
-                  <td>(629) 555-0129</td>
-                  <td>jerome@google.com</td>
-                  <td>Réunion</td>
-                  <td><span class="status-badge active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>Kathryn Murphy</td>
-                  <td>Microsoft</td>
-                  <td>(406) 555-0120</td>
-                  <td>kathryn@microsoft.com</td>
-                  <td>Curaçao</td>
-                  <td><span class="status-badge active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>Jacob Jones</td>
-                  <td>Yahoo</td>
-                  <td>(208) 555-0112</td>
-                  <td>jacob@yahoo.com</td>
-                  <td>Brazil</td>
-                  <td><span class="status-badge active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>Kristin Watson</td>
-                  <td>Facebook</td>
-                  <td>(704) 555-0127</td>
-                  <td>kristin@facebook.com</td>
-                  <td>Åland Islands</td>
-                  <td><span class="status-badge inactive">Inactive</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="pagination">
-            <div class="pagination-info">Showing data 1 to 8 of 256k entries</div>
-            <div class="pagination-controls">
-              <button class="pagination-btn" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                  <path d="m15 18-6-6 6-6"></path>
-                </svg>
-              </button>
-              <button class="pagination-btn active">1</button>
-              <button class="pagination-btn">2</button>
-              <button class="pagination-btn">3</button>
-              <button class="pagination-btn">4</button>
-              <button class="pagination-btn disabled">...</button>
-              <button class="pagination-btn">40</button>
-              <button class="pagination-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                  <path d="m9 18 6-6-6-6"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
+  
+  {{ status_data|json_script:"status-data" }}
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
   <script>
-      // Function to get the token from localStorage
-      function getToken() {
-          return localStorage.getItem('authToken');  
-      }
-      
-      function fetchUserData() {
-          const token = getToken();
-          
-          if (!token) {
-              console.log("No token found");
-              window.location.href = '/super-admin/'
-          }
-      
-        
-      }
-      document.addEventListener("DOMContentLoaded", fetchUserData);
-    </script>
+      const statusData = JSON.parse(document.getElementById('status-data').textContent);
+
+const statusCtx = document.getElementById('statusChart').getContext('2d');
+new Chart(statusCtx, {
+  type: 'pie',
+  data: {
+    labels: statusData.map(item => item.is_active ? 'Active' : 'Inactive'),
+    datasets: [{
+      label: 'Companies Status',
+      data: statusData.map(item => item.count),
+      backgroundColor: [
+        '#a2c2f8',  
+        '#f8c8b5',  
+        '#b8e6a1',  
+        '#f1a7a1',  
+        '#d0a4de',  
+        '#e5b3b3', 
+        '#e1e1e1', 
+        '#f6e3b4',  
+        '#99d4cc',  
+        '#c8f0a1'   
+      ],
+      hoverBackgroundColor: [
+        '#7fa9d8',  
+        '#f0a37b', 
+        '#9dd97b',  
+        '#e07b7b',  
+        '#a97bbf',  
+        '#d58b8b',  
+        '#c3c3c3',  
+        '#e2d27a',  
+        '#5ab0a2',  
+        '#97d168'   
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true
+  }
+});
+
+  </script>
+    
     
 </body>
 </html>

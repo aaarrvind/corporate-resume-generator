@@ -1,0 +1,328 @@
+/* Base styles */
+.companyHistory-body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+    color: #333;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+  
+  /* Container styles */
+  .companyHistory-container {
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Heading styles */
+  .companyHistory-heading {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+  }
+  
+  
+
+  .companyHistory-subheading {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Chart section styles */
+  .companyHistory-chartSection {
+    margin-top: 3rem;
+  }
+  
+  .companyHistory-chartTitle {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1e3a8a;
+  }
+  
+  .companyHistory-chartContainer {
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .companyHistory-body {
+      padding: 1rem;
+    }
+  
+    .companyHistory-container {
+      padding: 1rem;
+    }
+  
+    .companyHistory-heading {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  
+    .companyHistory-chartSection {
+      margin-top: 2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .companyHistory-body {
+      padding: 0.5rem;
+    }
+  
+    .companyHistory-container {
+      padding: 0.75rem;
+    }
+  
+    .companyHistory-heading {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  
+    .companyHistory-subheading {
+      font-size: 0.875rem;
+    }
+  
+    .companyHistory-chartTitle {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+  }
+  
+  .company-action {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .company-action div:nth-child(even) button {
+    font-size: 21px;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  .company-action div:nth-child(even) button:nth-child(odd) {
+    color: #ffffff;
+    background-color: #ff7d49;
+  }
+
+  .company-action div:nth-child(even) button:nth-child(odd):hover {
+    background-color: #ffbf94;
+  }
+
+  .company-action div:nth-child(even) button:nth-child(even) {
+    color: #cf0e0e;
+    background-color: #ff0f0f37;
+  }
+
+  .company-action div:nth-child(even) button:nth-child(even):hover {
+    background-color: #ffaaaa;
+  }
+
+  @media screen and (max-width:460px) {
+    .company-action div:nth-child(even) button {
+      font-size: 15px;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  }
+
+  .success-message {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 19999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+  }
+  
+  .success-message.fade-out {
+    opacity: 0;
+  }
+
+  .chart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y:hidden;
+    display: none;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .chart-overlay.active {
+    display: block;
+  }
+
+  .popupForm {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    z-index: 1999;
+    left: 50%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0  ;
+    overflow-y: hidden;
+    animation: popup 0.3s ease-in forwards;
+    display: none;
+  }
+
+  .popupForm.active {
+    display: block;
+  }
+  
+  @keyframes popup {
+    0% {
+      transform: translate(-50%, -50%) scale(0.7);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .popupForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .popupForm form label {
+    margin-top: 10px;
+  }
+
+  .popupForm form input  {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border: 0.5px solid rgb(149, 149, 149);
+    border-radius: 5px;
+  }
+
+    .popupForm form button[type="submit"] {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .popupForm form button[type="submit"]:hover {
+    background-color: #5759e6;
+    transform: scale(0.95);
+  }
+  
+  /* popup form Responsive Styles */
+  @media (max-width: 600px) {
+    .popupForm {
+      width: 90%;
+    }
+    
+    .popupform-heading {
+      padding: 12px 20px;
+    }
+    
+    .popupform-heading h1 {
+      font-size: 20px;
+    }
+    
+    .popupForm form {
+      padding: 20px;
+    }
+    
+    .popupForm form label {
+      font-size: 18px;
+    }
+    
+    .popupForm form input {
+      padding: 10px;
+      font-size: 14px;
+    }
+    
+    .popupForm form button[type="submit"] {
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+  }
+  
+  .popupform-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .popupform-heading button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #ffc7c7;
+    border-radius: 5px;
+    color: rgb(9, 0, 0);
+    font-size: 17px;
+  }
+
+  /* popup form responsiveness */
+  @media (max-width: 400px) {
+    .popupForm {
+      width: 100%;
+    }
+    
+    .popupform-heading h1 {
+      font-size: 18px;
+    }
+    
+    .popupForm form {
+      padding: 15px;
+    }
+    
+    .popupForm form label {
+      font-size: 16px;
+    }
+    
+    .popupForm form input {
+      margin-bottom: 15px;
+    }
+  }
+
+  .success {
+    position: absolute;
+    background-color: rgb(21, 164, 21);
+    color: rgb(255, 255, 255);
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    top: 20px;
+    right: 20px;
+    z-index: 1099;
+  }

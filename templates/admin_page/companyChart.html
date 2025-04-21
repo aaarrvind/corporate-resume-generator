@@ -1,11 +1,272 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ company_name }} - Hiring Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="{% static 'admin/companyHistory.css' %}" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
-    company id {{company_id}}
+<body class="companyHistory-body">
+    <div class="chart-overlay" id="chart-overlay"></div>
+    <div class="popupForm" id="popupForm">
+        <div class="popupform-heading">
+          <h1>Add company admin details</h1>
+          <button id="closeform" class="closeform">Close</button>
+        </div>
+        <form id="popupForm-data" method="POST">
+          <label>company name</label>
+          <input type="text" id="companyName" name="companyName" placeholder="Enter company name">
+          <label>Company EmailID</label>
+          <input type="text" id="companyEmail" name="companyEmail" placeholder="Enter company Email Id"></input>
+          <label>Password</label>
+          <input type="password" id="companyPassword" name="companyPassword" placeholder="Enter the password">
+
+          <button id="form-submit" type="submit">Add</button>
+        </form>
+      </div>
+
+
+    <div class="companyHistory-container">
+        <!-- Company Name Heading -->
+        <div class="company-action">
+            <div>
+                <h1 class="companyHistory-heading">{{ company_name }}</h1>
+                <p class="companyHistory-subheading">Hiring Trend Analysis</p>
+            </div>
+            <div>
+                <button id="company-update-data"><i class='bx bxs-edit'></i></button>
+                <button id="delete-company-data"><i class='bx bxs-trash'></i></button>
+            </div>
+        </div>
+
+        <!-- Monthly Hiring Chart -->
+        <div class="companyHistory-chartSection">
+            <h3 class="companyHistory-chartTitle">Monthly Hiring Trend</h3>
+            <div class="companyHistory-chartContainer">
+                <canvas id="monthlyChart" height="100"></canvas>
+            </div>
+        </div>
+
+        <!-- Designation Pie Chart -->
+        <div class="compnay">
+            <div class="companyHistory-chartSection">
+                <h3 class="companyHistory-chartTitle">Designation Distribution</h3>
+                <div class="companyHistory-chartContainer">
+                    <canvas id="designationChart" height="100"></canvas>
+                </div>
+            </div>
+    
+            <!-- Status Bar Chart -->
+            <div class="companyHistory-chartSection">
+                <h3 class="companyHistory-chartTitle">Employee Status</h3>
+                <div class="companyHistory-chartContainer">
+                    <canvas id="statusChart" height="100"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {{ monthly_hiring_data|json_script:"monthly-data" }}
+    {{ designation_data|json_script:"designation-data" }}
+    {{ status_data|json_script:"status-data" }}
+
+    {{ company_id|json_script:"company_id" }}
+    <script>
+        const monthlyData = JSON.parse(document.getElementById('monthly-data').textContent);
+        const designationData = JSON.parse(document.getElementById('designation-data').textContent);
+        const statusData = JSON.parse(document.getElementById('status-data').textContent);
+
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyData.map(item => item.month),
+                datasets: [{
+                    label: 'Employees Added',
+                    data: monthlyData.map(item => item.count),
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.3)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }
+            }
+        });
+
+        const designationCtx = document.getElementById('designationChart').getContext('2d');
+        new Chart(designationCtx, {
+            type: 'pie',
+            data: {
+                labels: designationData.map(item => item.designation),
+                datasets: [{
+                    label: 'Designation Count',
+                    data: designationData.map(item => item.count),
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'bar',
+            data: {
+                labels: statusData.map(item => item.status),
+                datasets: [{
+                    label: 'Status Count',
+                    data: statusData.map(item => item.count),
+                    backgroundColor: ['#10b981', '#ef4444']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }
+            }
+        });
+
+
+
+        const deleteData  = document.getElementById('delete-company-data');
+        deleteData.onclick = () => {
+            
+            fetch('/super-admin/deleteData/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+                      'X-CSRFToken': getCSRFToken()       
+            },
+            body: JSON.stringify({ company_id: JSON.parse(document.getElementById('company_id').textContent) })  
+          }).then((res) => {
+            alert('Data has been deleted successfully')
+            window.location.href = '/super-admin/dashboard/';
+          }).catch(err =>{
+            alert('error during deleting the data')
+          })
+
+            
+        }
+
+        function getCSRFToken() {
+      let name = 'csrftoken';
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const updateDate = document.getElementById('company-update-data');
+    const overlay = document.querySelector('.chart-overlay');
+    const popupForm = document.querySelector('.popupForm');
+    const closeForm =  document.querySelector('.closeform');
+
+    closeForm.onclick = () => {
+        popupForm.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+
+    updateDate.onclick = () => {
+        popupForm.classList.add('active');
+        overlay.classList.add('active');
+        
+        const companyName = document.getElementById('companyName');
+        const companyEmail = document.getElementById('companyEmail');
+        const companyPassword = document.getElementById('companyPassword');
+
+        const company_id = document.getElementById('company_id').textContent;
+        fetch('/super-admin/updatCompanyData/',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+                      'X-CSRFToken': getCSRFToken()       
+            },
+            body:JSON.stringify({company_id:company_id})
+        }).then((res) =>{
+            return res.json()
+        }).then(data =>{
+            
+            console.log(data)
+            companyName.value = data.data.name;
+            companyEmail.value = data.data.email;
+
+
+        }).catch(err => {
+            alert('Error in updating the data');
+        })
+    }
+
+    overlay.onclick = () => {
+        popupForm.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+
+    const form_submit = document.getElementById('form-submit')
+    form_submit.onclick = (e) => {
+        e.preventDefault();
+        const company_id = document.getElementById('company_id').textContent;
+        const companyName = document.getElementById('companyName').value;
+        const companyEmail = document.getElementById('companyEmail').value;
+        const companyPassword = document.getElementById('companyPassword').value;
+        
+        const updatedData = {
+            company_id:company_id,
+            companyName:companyName,
+            companyEmail:companyEmail,
+            companyPassword:companyPassword
+        }
+
+        fetch('/super-admin/update-company/',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+                      'X-CSRFToken': getCSRFToken()       
+            },
+            body:JSON.stringify({updatedData})
+        }).then((res) => {
+            
+            const success = document.createElement('div');
+            success.classList.add('success');
+            success.innerText = 'Update successful!'; 
+            document.body.appendChild(success); 
+
+            setTimeout(() => {
+                location.reload();
+            }, 2000); 
+
+
+        }).catch(err => {
+            alert(err,'error in updating the data')
+        })
+    }
+
+    </script>
+
 </body>
 </html>

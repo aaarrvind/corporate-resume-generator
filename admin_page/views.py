@@ -7,11 +7,65 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import hashlib
 from django.db import connection
+from employees.models import Employee
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+from datetime import datetime
+from django.shortcuts import render, get_object_or_404
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+from admin_page.models import Company
+import calendar
 
 SECRET_KEY = settings.SECRET_KEY  
 
+from django.shortcuts import render
+from .models import Company
+from django.db.models import Count
+from django.db import connection
+
+# Delete company data
+def deleteData(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        company_id = data['company_id']
+
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM employee WHERE company_id = %s", [company_id])
+            
+            # Then delete the company
+            cursor.execute("DELETE FROM companies WHERE id = %s", [company_id])
+            connection.commit()
+            print('executed')
+
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+
+        return JsonResponse({'status': 'invalid method'}, status=405)
+
+def getCompany(request):
+    active = request.GET.get('active')
+    is_active = active == 'true'   
+    companies = Company.objects.filter(is_active=is_active)
+    return render(request, 'admin_page/getCompany.html', {'companies': companies})
+
+
 def customer(request):
-    return render(request, 'admin_page/index.html')
+    # Count active and inactive companies
+    status_data = Company.objects.values('is_active') \
+        .annotate(count=Count('id')) \
+        .order_by('is_active')
+    
+    # Convert the QuerySet to a list of dictionaries (JSON serializable)
+    status_data_list = list(status_data)
+
+    # Prepare the data to be passed into the template
+    context = {
+        'status_data': status_data_list
+    }
+
+    return render(request, 'admin_page/index.html', context)
+
 
 def Login(request):
     return render(request, 'admin_page/login.html')
@@ -19,8 +73,55 @@ def Login(request):
 def Dashboard(request):
     return render(request,'admin_page/dashboard.html')
 
-def companyHistory(request,company_id):
-    return render(request,'admin_page/companyChart.html',{'company_id':company_id})
+
+
+def companyHistory(request, company_id):
+    # Get the company object
+    company = get_object_or_404(Company, id=company_id)
+
+    # Monthly Hiring Data
+    monthly_queryset = (
+        Employee.objects.filter(company=company, is_deleted=False)
+        .annotate(month=TruncMonth('created_date'))
+        .values('month')
+        .annotate(count=Count('id'))
+        .order_by('month')
+    )
+    monthly_data = [
+        {"month": calendar.month_name[item['month'].month], "count": item['count']}
+        for item in monthly_queryset
+    ]
+
+    # Designation Data
+    designation_queryset = (
+        Employee.objects.filter(company=company, is_deleted=False)
+        .values('designation')
+        .annotate(count=Count('id'))
+    )
+    designation_data = [
+        {"designation": item['designation'], "count": item['count']}
+        for item in designation_queryset
+    ]
+
+    # Status Data
+    status_queryset = (
+        Employee.objects.filter(company=company, is_deleted=False)
+        .values('status')
+        .annotate(count=Count('id'))
+    )
+    status_data = [
+        {"status": item['status'], "count": item['count']}
+        for item in status_queryset
+    ]
+
+    return render(request, 'admin_page/companyChart.html', {
+        'company_id': company_id,
+        'company_name': company.name,
+        'monthly_hiring_data': monthly_data,
+        'designation_data': designation_data,
+        'status_data': status_data
+    })
+
 
 # handle company active and deactive button
 def handleActivity(request):
@@ -96,6 +197,9 @@ def HandleCompanyData(request):
     })
 
 
+import datetime
+
+
 @csrf_exempt
 def handleLogin(request):
     if request.method == 'POST':
@@ -105,16 +209,14 @@ def handleLogin(request):
             password = data.get('password')
 
             if email == "admin@example.com" and password == "admin123":
-                # Create a JWT token 
+                email = "admin@example.com"
                 payload = {
                     'email': email,
-                    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),  # Token expires in 1 hour
-                    'iat': datetime.datetime.utcnow() 
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+                    'iat': datetime.datetime.utcnow()
                 }
 
-                # Generate JWT token
                 token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
                 return JsonResponse({'success': True, 'message': 'Login successful', 'token': token})
 
             else:
@@ -139,3 +241,51 @@ def fetchCompanyData(request):
         return JsonResponse(companies,safe=False)
 
     return JsonResponse({'success':400,'message':'Error in fetching the data'})
+
+
+def updatCompanyData(request):
+    if request.method == 'POST':
+        data =  json.loads(request.body)
+        company_id = data.get('company_id')
+        
+        cursor = connection.cursor()
+        query = 'SELECT * from companies where id = %s'
+        cursor.execute(query,[company_id])
+        row = cursor.fetchone()
+
+        if row:
+            columns = [col[0] for col in cursor.description]
+            company_data = dict(zip(columns, row))
+
+            # Exclude password
+            if 'password' in company_data:
+                del company_data['password']
+
+            print(company_data)
+            return JsonResponse({'status': 'success', 'data': company_data})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Company not found'}, status=404)
+
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+def update_company(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        data = data['updatedData']
+        
+        company_id = data.get('company_id')
+        company_name = data.get('companyName')
+        company_email = data.get('companyEmail')
+        companyPassword = data.get('companyPassword')
+        
+        hashed_password = hashlib.sha256(companyPassword.encode()).hexdigest()
+        cursor = connection.cursor()
+        query = "UPDATE companies SET name = %s ,email = %s,password = %s WHERE id = %s"
+        cursor.execute(query,[company_name,company_email,hashed_password,company_id])
+        connection.commit()
+        cursor.close()
+
+        return JsonResponse({'status': 'success', 'message': 'Company updated successfully'})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)

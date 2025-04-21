@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'ResumeBuilder.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Make sure this is 'mysql'
-        'NAME': 'Resumebuilder',  # Your MySQL database name
-        'USER': 'root',  # Your MySQL username
-        'PASSWORD': 'password',  # Your MySQL password
+        'NAME': 'resumeBuilder',  # Your MySQL database name
+        'USER': 'rohan',  # Your MySQL username
+        'PASSWORD': 'Rohan@123',  # Your MySQL password
         'HOST': 'localhost',  # Usually localhost if you're running MySQL locally
         'PORT': '3306',  # Default MySQL port
     }
