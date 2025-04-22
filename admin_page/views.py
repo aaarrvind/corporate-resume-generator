@@ -24,6 +24,11 @@ from .models import Company
 from django.db.models import Count
 from django.db import connection
 
+def helpPage(request):
+    return render(request,'admin_page/Help.html')
+
+
+
 # Delete company data
 def deleteData(request):
     if request.method == 'POST':
@@ -289,3 +294,75 @@ def update_company(request):
         return JsonResponse({'status': 'success', 'message': 'Company updated successfully'})
     
     return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+
+# income page
+def incomePage(request):
+    return render(request,'admin_page/incomePage.html')
+
+from .models import SubscriptionPlan
+
+def handleSubscription(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            plan_type = data.get('plan_type')
+            duration_days = int(data.get('duration_days'))
+            price = float(data.get('price'))
+            offer_details = data.get('offer_details', '')
+
+            # Check if a plan with the given type exists
+            plan, created = SubscriptionPlan.objects.update_or_create(
+                plan_type=plan_type,
+                defaults={
+                    'duration_days': duration_days,
+                    'price': price,
+                    'offer_details': offer_details,
+                }
+            )
+
+            if created:
+                message = 'Subscription plan created successfully!'
+            else:
+                message = 'Subscription plan updated successfully!'
+
+            return JsonResponse({'message': message}, status=200)
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({'error': 'Failed to process subscription plan.'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def getSubscriptions(request):
+    if request.method == 'GET':
+        plans = SubscriptionPlan.objects.all().values()
+        return JsonResponse(list(plans), safe=False)
+
+# search company data
+def searchData(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            query = data.get('query', '').strip()
+
+            if not query:
+                return JsonResponse({'error': 'Empty query'}, status=400)
+
+            companies = Company.objects.filter(name__icontains=query).order_by('name')
+
+            results = list(companies.values(
+                'id', 'name', 'email', 'plan_type', 
+                'subscription_start', 'subscription_end', 'is_active'
+            ))
+
+            return JsonResponse({'results': results}, status=200)
+
+        except Exception as e:
+            print(f"[searchData ERROR]: {e}")
+            return JsonResponse({'error': 'Internal server error'}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+        

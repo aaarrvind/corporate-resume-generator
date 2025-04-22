@@ -1,0 +1,302 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title> 
+   <link rel="stylesheet" type="text/css" href="{% static 'admin/incomePage.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+              <line x1="3" x2="21" y1="9" y2="9"></line>
+              <line x1="9" x2="9" y1="21" y2="9"></line>
+            </svg>
+          </div>
+          <h1>Admin Panel</h1>
+        </div>
+        <button class="close-sidebar-btn" id="closeSidebarBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav"><style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f0f0f0;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 0.6rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+    </style>
+        <ul>
+          <li>
+            <a onclick="window.location.href='/super-admin/dashboard/'" href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <line x1="3" x2="21" y1="9" y2="9"></line>
+                <line x1="9" x2="9" y1="21" y2="9"></line>
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M16 16h6v6h-6z"></path>
+                <path d="M2 16h6v6H2z"></path>
+                <path d="M9 2h6v6H9z"></path>
+                <path d="M3 10h18"></path>
+                <path d="M10 3v17"></path>
+              </svg>
+              Product
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a  href="{% url 'customer' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              Customers
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'incomePage' %}" class="nav-item active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 2v20"></path>
+                <path d="M12 12H2"></path>
+                <path d="m20 16-4-4 4-4"></path>
+              </svg>
+              Income
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path d="m3 15 5-5 5 5"></path>
+                <path d="m18 9-5-5-5 5"></path>
+                <path d="M21 19H3"></path>
+              </svg>
+              Promote
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
+              Help
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="user-profile">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/40" alt="User avatar">
+        </div>
+        <div class="user-info">
+          <p class="user-name">Admin</p>
+          <p class="user-role">Project Manager</p>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <!-- Mobile Header -->
+      <header class="mobile-header">
+        <button class="menu-btn" id="menuBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="search-container">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="text" placeholder="Search..." class="search-input">
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <h1>Create Subscription Plan</h1>
+
+        <form id="planForm">
+          {% csrf_token %}
+          
+          <div class="form-group">
+              <label for="plan_type">Plan Type</label>
+              <select id="plan_type" name="plan_type" required>
+                  <option value="monthly">Monthly</option>
+                  <option value="yearly">Yearly</option>
+              </select>
+          </div>
+      
+          <div class="form-group">
+              <label for="duration_days">Duration (Days)</label>
+              <input type="number" id="duration_days" name="duration_days" required>
+              <span id="duration_error" class="error"></span>
+          </div>
+      
+          <div class="form-group">
+              <label for="price">Price (₹)</label>
+              <input type="number" id="price" name="price" step="0.01" required>
+              <span id="price_error" class="error"></span>
+          </div>
+      
+          <div class="form-group">
+              <label for="offer_details">Offer Details</label>
+              <textarea id="offer_details" name="offer_details" rows="4"></textarea>
+          </div>
+      
+          <button type="submit">Create Plan</button>
+      </form>
+    </div>
+
+    <div id="subscription-plans-container"></div>
+    </div>
+  </div>
+    
+  <script>
+    document.getElementById("planForm").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Stop default form submission
+    
+        // Get CSRF token from template or cookie
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+        // Collect form data
+        const data = {
+            plan_type: document.getElementById("plan_type").value,
+            duration_days: document.getElementById("duration_days").value,
+            price: document.getElementById("price").value,
+            offer_details: document.getElementById("offer_details").value
+        };
+
+        console.log(data)
+    
+        try {
+            const response = await fetch("/super-admin/handleSubscription/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken()
+                },
+                body: JSON.stringify(data)
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                alert("Plan created successfully!");
+                location.reload()
+            } else {
+                const error = await response.json();
+                alert("Failed to create plan: " + JSON.stringify(error));
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong!");
+        }
+    });
+
+    function getCSRFToken() {
+      let name = 'csrftoken';
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/super-admin/subscriptions/')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('subscription-plans-container');
+
+                if (data.length === 0) {
+                    container.innerHTML = "<p>No subscription plans available.</p>";
+                    return;
+                }
+
+                data.forEach(plan => {
+                    const planDiv = document.createElement("div");
+                    planDiv.className = "subscription-card";
+                    planDiv.innerHTML = `
+                        <h3>${plan.plan_type.charAt(0).toUpperCase() + plan.plan_type.slice(1)} Plan</h3>
+                        <p><strong>Duration:</strong> ${plan.duration_days} days</p>
+                        <p><strong>Price:</strong> ₹${plan.price}</p>
+                        <p><strong>Offer:</strong> ${plan.offer_details || 'N/A'}</p>
+                        <hr/>
+                    `;
+                    container.appendChild(planDiv);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching subscription plans:", error);
+            });
+    });
+
+    </script>
+    
+</body>
+</html>

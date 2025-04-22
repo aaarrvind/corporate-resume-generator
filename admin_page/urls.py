@@ -13,5 +13,10 @@ urlpatterns = [
     path('getCompanies/',views.getCompany,name='getCompany'),
     path('deleteData/',views.deleteData,name='deleteData'),
     path('updatCompanyData/',views.updatCompanyData,name='updatCompanyData'),
-    path('update-company/',views.update_company,name='update-company')
+    path('update-company/',views.update_company,name='update-company'),
+    path('helpPage/',views.helpPage,name='helpPage'),
+    path('incomePage/',views.incomePage,name='incomePage'),
+    path('handleSubscription/',views.handleSubscription,name='handleSubscription'),
+    path('subscriptions/', views.getSubscriptions, name='get_subscriptions'),
+    path('searchData/',views.searchData,name='searchData')
 ]

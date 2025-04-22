@@ -110,7 +110,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item">
+            <a href="{% url 'incomePage' %}" class="nav-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -141,7 +141,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item">
+            <a href="{% url 'helpPage' %}" class="nav-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -195,14 +195,11 @@
         <!-- Header -->
         <div class="content-header">
           <h1 class="greeting">Hello admin 👋</h1>
-          <div class="search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <input type="text" placeholder="Search" class="search-input">
+          <div class="search-container" style="position: relative;">
+            <input type="text" placeholder="Search by company name" id="search-input" class="search-input">
+            <ul id="search-results" class="dropdown-results"></ul>
           </div>
+          
         </div>
 
         <!-- Displaying the chart -->
@@ -267,6 +264,67 @@
   </div>
 
   <script>
+   const searchInput = document.getElementById('search-input');
+  const resultsList = document.getElementById('search-results');
+  const submitSearchBtn = document.getElementById('submit-search');
+
+
+    searchInput.onfocus = () => {
+      const search_close = document.querySelector('.search-close');
+      search_close.classList.add('active');
+
+      search_close.onclick = () => {
+        searchInput.value = '';
+        search_close.classList.remove('active');
+      };
+    }
+
+    searchInput.onblur = () => {
+      const search_close = document.querySelector('.search-close');
+      search_close.classList.remove('active');
+    };
+
+
+// Fetch data on input change
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim();
+
+  if (query.length === 0) {
+    resultsList.innerHTML = '';
+    return;
+  }
+
+  fetch('/super-admin/searchData/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRFToken()
+    },
+    body: JSON.stringify({ query })
+  })
+  .then(response => response.json())
+  .then(data => {
+    resultsList.innerHTML = ''; // clear previous results
+
+    if (data.results && data.results.length > 0) {
+      data.results.forEach(company => {
+        const li = document.createElement('li');
+        li.textContent = company.name;
+        li.onclick = () => {
+          // Redirect to a specific page, e.g., /company-details/<id>/
+          window.location.href = `/super-admin/details/${company.id}/`;
+        };
+        resultsList.appendChild(li);
+      });
+    } else {
+      resultsList.innerHTML = '<li>No results found</li>';
+    }
+  })
+  .catch(error => {
+    console.error('Search error:', error);
+  });
+});
+
     const openFormBtn = document.getElementById('openFormBtn');
     const popupForm = document.getElementById('popupForm');
     const overlay = document.getElementById('chart-overlay');
