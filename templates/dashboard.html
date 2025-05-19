@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Welcome, {{ profile.company_name }}</h2>
+<p><strong>Subscription Plan:</strong> {{ profile.subscription_plan }}</p>
+<p><strong>Usage Count:</strong> {{ profile.usage_count }}</p>
+<a href="{% url 'company_profile' %}" class="btn btn-outline-primary">Edit Profile</a>
+{% endblock %}
