@@ -6,7 +6,7 @@ from .forms import ProjectForm
 from admin_page.models import Company
 from technologies.models import CodingLanguage, Tool
 
-@login_required
+# @login_required
 def project_list(request):
     try:
         company = Company.objects.first()
@@ -22,7 +22,7 @@ def project_list(request):
         'deleted_projects': deleted_projects
     })
 
-@login_required
+# @login_required
 def project_create(request):
     try:
         company = Company.objects.first()
@@ -53,7 +53,7 @@ def project_create(request):
         'no_tools': no_tools
     })
 
-@login_required
+# @login_required
 def project_update(request, pk):
     try:
         company = Company.objects.first()
@@ -80,7 +80,7 @@ def project_update(request, pk):
         'no_tools': no_tools
     })
 
-@login_required
+# @login_required
 def project_delete(request, pk):
     try:
         company = Company.objects.first()
@@ -94,7 +94,7 @@ def project_delete(request, pk):
     project.save()
     return redirect('project_list')
 
-@login_required
+# @login_required
 def project_restore(request, pk):
     try:
         company = Company.objects.first()
@@ -109,7 +109,7 @@ def project_restore(request, pk):
     project.save()
     return redirect('project_list')
 
-@login_required
+# @login_required
 def project_permanent_delete(request, pk):
     try:
         company = Company.objects.first()

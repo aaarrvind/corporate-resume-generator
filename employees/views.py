@@ -7,7 +7,7 @@ from admin_page.models import Company
 from technologies.models import CodingLanguage, Tool
 from projects.models import Project
 
-@login_required
+# @login_required
 def employee_list(request):
     try:
         company = Company.objects.first()
@@ -20,7 +20,7 @@ def employee_list(request):
         deleted_employees_employees = Employee.objects.none()
     return render(request, 'employees/employee_list.html', {'active_employees': active_employees, 'deleted_employees':deleted_employees})
 
-@login_required
+# @login_required
 def employee_create(request):
     try:
         company = Company.objects.first()
@@ -53,7 +53,7 @@ def employee_create(request):
         'no_projects': no_projects
     })
 
-@login_required
+# @login_required
 def employee_update(request, pk):
     try:
         company = Company.objects.first()
@@ -82,7 +82,7 @@ def employee_update(request, pk):
         'no_projects': no_projects
     })
 
-@login_required
+# @login_required
 def employee_delete(request, pk):
     try:
         company = Company.objects.first()
@@ -97,7 +97,7 @@ def employee_delete(request, pk):
     employee.save()
     return redirect('employee_list')
 
-@login_required
+# @login_required
 def employee_restore(request, pk):
     try:
         company = Company.objects.first()
@@ -114,7 +114,7 @@ def employee_restore(request, pk):
     return redirect('employee_list')
 
 
-@login_required
+# @login_required
 def employee_permanent_delete(request , pk):
     try:
         company = Company.objects.first()

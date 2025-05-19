@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from .models import CodingLanguage, Tool
 from .forms import CodingLanguageForm, ToolForm
 
-@login_required
+# @login_required
 def coding_language_list(request):
     active_languages = CodingLanguage.objects.filter(is_deleted=False)
     deleted_languages = CodingLanguage.objects.filter(is_deleted=True)
@@ -13,7 +13,7 @@ def coding_language_list(request):
         'deleted_languages': deleted_languages
     })
 
-@login_required
+# @login_required
 def coding_language_create(request):
     if request.method == 'POST':
         form = CodingLanguageForm(request.POST)
@@ -30,7 +30,7 @@ def coding_language_create(request):
         form = CodingLanguageForm()
     return render(request, 'technologies/coding_language_form.html', {'form': form})
 
-@login_required
+# @login_required
 def coding_language_update(request, pk):
     language = get_object_or_404(CodingLanguage, pk=pk, is_deleted=False)
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def coding_language_update(request, pk):
         form = CodingLanguageForm(instance=language)
     return render(request, 'technologies/coding_language_form.html', {'form': form})
 
-@login_required
+# @login_required
 def coding_language_delete(request, pk):
     language = get_object_or_404(CodingLanguage, pk=pk, is_deleted=False)
     language.is_deleted = True
@@ -55,7 +55,7 @@ def coding_language_delete(request, pk):
     language.save()
     return redirect('coding_language_list')
 
-@login_required
+# @login_required
 def coding_language_restore(request, pk):
     language = get_object_or_404(CodingLanguage, pk=pk, is_deleted=True)
     language.is_deleted = False
@@ -63,13 +63,13 @@ def coding_language_restore(request, pk):
     language.save()
     return redirect('coding_language_list')
 
-@login_required
+# @login_required
 def coding_language_permanent_delete(request, pk):
     language = get_object_or_404(CodingLanguage, pk=pk, is_deleted=True)
     language.delete()
     return redirect('coding_language_list')
 
-@login_required
+# @login_required
 def tool_list(request):
     active_tools = Tool.objects.filter(is_deleted=False)
     deleted_tools = Tool.objects.filter(is_deleted=True)
@@ -78,7 +78,7 @@ def tool_list(request):
         'deleted_tools': deleted_tools
     })
 
-@login_required
+# @login_required
 def tool_create(request):
     if request.method == 'POST':
         form = ToolForm(request.POST)
@@ -95,7 +95,7 @@ def tool_create(request):
         form = ToolForm()
     return render(request, 'technologies/tool_form.html', {'form': form})
 
-@login_required
+# @login_required
 def tool_update(request, pk):
     tool = get_object_or_404(Tool, pk=pk, is_deleted=False)
     if request.method == 'POST':
@@ -112,7 +112,7 @@ def tool_update(request, pk):
         form = ToolForm(instance=tool)
     return render(request, 'technologies/tool_form.html', {'form': form})
 
-@login_required
+# @login_required
 def tool_delete(request, pk):
     tool = get_object_or_404(Tool, pk=pk, is_deleted=False)
     tool.is_deleted = True
@@ -120,7 +120,7 @@ def tool_delete(request, pk):
     tool.save()
     return redirect('tool_list')
 
-@login_required
+# @login_required
 def tool_restore(request, pk):
     tool = get_object_or_404(Tool, pk=pk, is_deleted=True)
     tool.is_deleted = False
@@ -128,7 +128,7 @@ def tool_restore(request, pk):
     tool.save()
     return redirect('tool_list')
 
-@login_required
+# @login_required
 def tool_permanent_delete(request, pk):
     tool = get_object_or_404(Tool, pk=pk, is_deleted=True)
     tool.delete()
